@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Haven callouts · Mapframes</title>
+<meta name="description" content="Every Haven callout on your relief map – official names, player slang and where the names come from.">
+<meta name="theme-color" content="#f7f5f0">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700&family=Barlow+Condensed:wght@700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<header class="top"><div class="wrap"><a class="brand" href="../">MAP<span>FRAMES</span></a><nav class="maps"><a class="on" href="../ascent/">Ascent</a><span title="Coming soon">Bind</span><a href="../haven/">Haven</a><span title="Coming soon">Split</span><span title="Coming soon">Lotus</span><span title="Coming soon">Sunset</span></nav></div></header>
+<main class="wrap">
+<section class="hero">
+  <div class="eyebrow">Relief map guide</div>
+  <h1 class="title">HAVEN</h1>
+  <hr class="rule">
+  <div class="sub">Thimphu · Bhutan</div>
+  <p class="lead">Every callout you can find on your relief – the official names, the slang players use and where the names come from. Tap a callout to see where it is and how it looks.</p>
+</section>
+
+<section class="facts">
+  <div class="fact"><b>Release date</b>April 7, 2020 – one of the three closed-beta maps</div>
+  <div class="fact"><b>Setting</b>Thimphu, Bhutan – a monastery high in the Himalayas</div>
+  <div class="fact"><b>Layout</b>Three bomb sites (A, B and C) – the first map with three</div>
+  <div class="fact"><b>Special</b>B site sits inside the monastery's central shrine</div>
+  <div class="fact"><b>Trivia</b>Its code name in the game files is “Triad”</div>
+</section>
+
+<h2>All callouts</h2>
+<p class="h2sub"><span id="count">29</span> spots. The <b style="color:var(--accent)">orange numbers</b> match the 27 callouts printed on your poster.</p>
+
+<section class="explore">
+  <div class="mapbox" id="mapbox">
+    <div class="map" id="map"><img src="../assets/haven-map.webp" alt="Top view of the Haven relief map with callout markers" width="1338" height="1492"><div class="tip" id="tip"></div></div>
+    <div class="legend"><span><i class="p"></i>On your poster</span><span><i></i>Extra callout</span><span>A site left · C site right · attackers top</span></div>
+  </div>
+  <div>
+    <div class="controls">
+      <input class="search" id="q" type="search" placeholder="Search a callout, e.g. Heaven, Gong, Logs…" autocomplete="off">
+      <div class="tabs" id="tabs">
+        <button class="on" data-f="all">All</button><button data-f="poster">On your poster</button>
+        <button data-f="A">A side</button><button data-f="Mid">Mid</button><button data-f="B">B site</button><button data-f="C">C side</button><button data-f="Spawns">Spawns</button>
+      </div>
+    </div>
+    <div class="list" id="list"></div>
+  </div>
+</section>
+
+<h2>More maps</h2>
+<p class="h2sub">More relief frames are on the way.</p>
+<div class="cards">
+  <a class="card" href="../ascent/"><div class="th"><img src="../assets/ascent-map.webp" alt=""></div><span class="badge">Available</span><h3>ASCENT</h3><p>Venice · Italy</p></a>
+  <a class="card" href="./"><div class="th"><img src="../assets/haven-map.webp" alt=""></div><span class="badge">Available</span><h3>HAVEN</h3><p>Thimphu · Bhutan</p></a>
+  <div class="card soon"><div class="th"><em>BIND</em></div><span class="badge">Coming soon</span><h3>BIND</h3></div><div class="card soon"><div class="th"><em>SPLIT</em></div><span class="badge">Coming soon</span><h3>SPLIT</h3></div>
+</div>
+</main>
+<footer><div class="wrap"><b>MAPFRAMES</b> · 3D relief map frames<br>
+Fan-made project. VALORANT, Haven and all related names are trademarks of Riot Games, Inc. Not endorsed by or affiliated with Riot Games.</div></footer>
+<script>
+const C=[{"n": "Attacker Spawn", "a": "T Spawn", "d": "Where attackers start. \"T\" stands for Terrorists in CS.", "note": "", "g": "Spawns", "p": 1, "x": 50.96, "y": 8.23, "o": 1}, {"n": "A Garden", "a": "Garden", "d": "A small walled garden on the attackers' way to A.", "note": "", "g": "A", "p": 2, "x": 39.08, "y": 24.16, "o": 1}, {"n": "A Lobby", "a": "", "d": "Attackers' entrance hall in front of A Long and A Sewer.", "note": "", "g": "A", "p": 3, "x": 36.2, "y": 36.56, "o": 1}, {"n": "A Long", "a": "A Main", "d": "The long open lane onto A site.", "note": "", "g": "A", "p": 4, "x": 12.06, "y": 41.48, "o": 1}, {"n": "A Sewer", "a": "Sewers, A Short", "d": "A sunken passage – the short way from A Lobby onto A.", "note": "A sunken channel on the relief.", "g": "A", "p": 5, "x": 36.08, "y": 49.44, "o": 1}, {"n": "A Site", "a": "", "d": "Bomb site A.", "note": "", "g": "A", "p": 6, "x": 11.27, "y": 59.63, "o": 1}, {"n": "A Box", "a": "A Boxes", "d": "The stack of crates in the middle of A site.", "note": "", "g": "A", "p": 7, "x": 11.73, "y": 61.09, "o": 0}, {"n": "Graffiti", "a": "", "d": "The long painted wall on the side of A site.", "note": "Painted on a wall – not part of the relief.", "g": "A", "p": 0, "x": 24.33, "y": 60.21, "o": 0}, {"n": "A Tower", "a": "Heaven", "d": "The raised tower above A site – \"Heaven\", a name borrowed from CS.", "note": "", "g": "A", "p": 8, "x": 7.62, "y": 69.35, "o": 1}, {"n": "Heaven Stairs", "a": "Tower Stairs", "d": "The stairs from A Link up into the tower.", "note": "", "g": "A", "p": 9, "x": 19.5, "y": 77.07, "o": 0}, {"n": "Hell", "a": "Under Tower", "d": "The space right under the tower – \"Hell\" below \"Heaven\", also from CS.", "note": "Hidden under the tower on the relief – look below the upper floor.", "g": "A", "p": 0, "x": 10.36, "y": 70.4, "o": 0}, {"n": "A Link", "a": "", "d": "The corridor linking A site to the defenders' side.", "note": "", "g": "A", "p": 10, "x": 29.16, "y": 71.33, "o": 1}, {"n": "Mid Window", "a": "Window", "d": "A window room overlooking Mid from the attackers' side.", "note": "", "g": "Mid", "p": 11, "x": 49.13, "y": 31.06, "o": 1}, {"n": "Mid Courtyard", "a": "Mid", "d": "The open courtyard in the middle of the map, leading to B.", "note": "", "g": "Mid", "p": 12, "x": 50.31, "y": 40.08, "o": 1}, {"n": "Mid Doors", "a": "Doors", "d": "The doorway between Mid and C Lobby.", "note": "", "g": "Mid", "p": 13, "x": 64.79, "y": 36.56, "o": 1}, {"n": "B Site", "a": "", "d": "Bomb site B – inside the monastery's central shrine.", "note": "", "g": "B", "p": 14, "x": 51.35, "y": 58.45, "o": 1}, {"n": "B Box", "a": "", "d": "The big tech container in the middle of B site.", "note": "", "g": "B", "p": 15, "x": 49.59, "y": 59.84, "o": 0}, {"n": "B Back", "a": "Gong, Back B", "d": "The back of B site – there is a big gong on the wall, hence \"Gong\".", "note": "", "g": "B", "p": 16, "x": 49.0, "y": 70.87, "o": 1}, {"n": "C Lobby", "a": "", "d": "Attackers' entrance hall in front of C.", "note": "", "g": "C", "p": 17, "x": 81.11, "y": 30.59, "o": 1}, {"n": "C Cubby", "a": "Cubby", "d": "A small nook off C Lobby.", "note": "", "g": "C", "p": 18, "x": 84.51, "y": 38.9, "o": 1}, {"n": "C Long", "a": "C Main", "d": "The long lane from C Lobby onto C site.", "note": "", "g": "C", "p": 19, "x": 89.2, "y": 40.31, "o": 1}, {"n": "C Garage", "a": "Garage", "d": "A garage room between Mid and C site.", "note": "", "g": "C", "p": 20, "x": 64.53, "y": 50.14, "o": 1}, {"n": "C Window", "a": "", "d": "A window between C site and the garage area.", "note": "", "g": "C", "p": 21, "x": 66.23, "y": 57.87, "o": 1}, {"n": "C Site", "a": "", "d": "Bomb site C.", "note": "", "g": "C", "p": 22, "x": 86.85, "y": 57.99, "o": 1}, {"n": "C Box", "a": "", "d": "The tarp-covered crates on C site.", "note": "", "g": "C", "p": 23, "x": 84.39, "y": 60.23, "o": 0}, {"n": "Logs", "a": "", "d": "A pile of logs on the edge of C site.", "note": "", "g": "C", "p": 24, "x": 76.56, "y": 59.14, "o": 0}, {"n": "Plat", "a": "Platform", "d": "The metal platform at the back of C site.", "note": "", "g": "C", "p": 25, "x": 95.88, "y": 60.23, "o": 0}, {"n": "C Link", "a": "", "d": "The corridor linking C site to the defenders' side.", "note": "", "g": "C", "p": 26, "x": 66.88, "y": 65.71, "o": 1}, {"n": "Defender Spawn", "a": "CT Spawn, CT", "d": "Where defenders start. \"CT\" stands for Counter-Terrorists in CS.", "note": "", "g": "Spawns", "p": 27, "x": 40.52, "y": 86.9, "o": 1}];
+const GN={A:'A side',Mid:'Mid',B:'B site',C:'C side',Spawns:'Spawns'};
+const map=document.getElementById('map'),list=document.getElementById('list'),tip=document.getElementById('tip'),q=document.getElementById('q');
+let filt='all',sel=-1;
+C.forEach((c,i)=>{const b=document.createElement('button');b.className='dot'+(c.p?' p':'');b.style.left=c.x+'%';b.style.top=c.y+'%';b.setAttribute('aria-label',c.n);b.dataset.i=i;
+  b.onmouseenter=()=>showTip(i);b.onmouseleave=()=>{if(sel!==i)tip.style.display='none'};b.onclick=()=>pick(i,true);map.appendChild(b);c.dot=b;});
+function showTip(i){const c=C[i];tip.textContent=c.n+(c.a?' · '+c.a:'');tip.style.left=c.x+'%';tip.style.top=c.y+'%';tip.style.display='block'}
+function match(c){const s=q.value.trim().toLowerCase();
+  const f=filt==='all'||(filt==='poster'?c.p:c.g===filt);
+  return f&&(!s||(c.n+' '+c.a+' '+c.d).toLowerCase().includes(s))}
+function render(){list.innerHTML='';let g='',n=0;
+  C.forEach((c,i)=>{const ok=match(c);c.dot.classList.toggle('dim',!ok);if(!ok)return;n++;
+    if(c.g!==g){g=c.g;const h=document.createElement('div');h.className='grp';h.textContent=GN[g];list.appendChild(h)}
+    const b=document.createElement('div');b.className='item'+(i===sel?' sel':'');b.id='c'+i;b.tabIndex=0;b.setAttribute('role','button');b.setAttribute('aria-expanded',i===sel);
+    b.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();pick(i,false)}};
+    b.innerHTML=`<span class="num${c.p?' p':''}">${c.p||'·'}</span><span><span class="nm">${c.n}</span>${c.a?`<span class="al">${c.a}</span>`:''}${c.o?'<span class="tag">Official</span>':''}<div class="ds">${c.d}</div>${c.note?`<span class="nt">${c.note}</span>`:''}${c.img?'<span class="hasph">Tap to see photo</span>':''}</span>`;
+    b.onclick=()=>pick(i,false);list.appendChild(b);if(i===sel)addPhoto(b,c)});
+  document.getElementById('count').textContent=n;
+  if(!n)list.innerHTML='<div class="empty">No callout found.</div>'}
+function addPhoto(el,c){if(!c.img||el.querySelector('.ph'))return;
+  const f=document.createElement('figure');f.className='ph';
+  const pin=c.px&&c.px[0]>0.03&&c.px[0]<0.97&&c.px[1]>0.03&&c.px[1]<0.97?`<span class="pin" style="left:${c.px[0]*100}%;top:${c.px[1]*100}%"></span>`:'';
+  f.innerHTML=`<div class="phi"><img src="../assets/callouts/haven/${c.img}.webp" width="960" height="540" alt="View of ${c.n} on Haven" loading="lazy">${pin}</div><figcaption>View from the 3D map · the pin marks ${c.n}</figcaption>`;
+  f.onclick=e=>e.stopPropagation();el.querySelector(':scope > span:last-child').appendChild(f)}
+function pick(i,fromMap){
+  const same=sel===i&&!fromMap;
+  document.querySelectorAll('.item .ph').forEach(e=>e.remove());
+  document.querySelectorAll('.item.sel').forEach(e=>{e.classList.remove('sel');e.setAttribute('aria-expanded','false')});
+  if(same){sel=-1;C.forEach(c=>c.dot.classList.remove('sel'));tip.style.display='none';return}
+  sel=i;C.forEach((c,j)=>c.dot.classList.toggle('sel',j===i));showTip(i);
+  let el=document.getElementById('c'+i);
+  if(!el&&fromMap){filt='all';q.value='';document.querySelectorAll('#tabs button').forEach(x=>x.classList.toggle('on',x.dataset.f==='all'));render();el=document.getElementById('c'+i)}
+  if(!el)return;
+  el.classList.add('sel');el.setAttribute('aria-expanded','true');addPhoto(el,C[i]);
+  requestAnimationFrame(()=>el.scrollIntoView({behavior:'smooth',block:fromMap?'center':'nearest'}))}
+document.getElementById('tabs').onclick=e=>{const b=e.target.closest('button');if(!b)return;filt=b.dataset.f;
+  document.querySelectorAll('#tabs button').forEach(x=>x.classList.toggle('on',x===b));render()};
+q.oninput=render;render();
+</script>
+</body>
+</html>
