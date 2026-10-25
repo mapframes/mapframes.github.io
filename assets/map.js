@@ -53,8 +53,23 @@ function pick(i,fromMap){
   render();
   history.replaceState(null,'','#'+slug(C[i].n));
   const r=$('c-'+slug(C[i].n));
-  if(r)requestAnimationFrame(()=>r.scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:fromMap?'start':'nearest'}));
+  if(r)requestAnimationFrame(()=>reveal(r,fromMap));
 }
+/* scroll the callout list, not the page; the page only moves when the list is off screen */
+const sheet=document.querySelector('.sheet'), mobile=matchMedia('(max-width:900px)');
+function reveal(r,fromMap){
+  const smooth=matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth';
+  const head=(list.querySelector('.grp')||{}).offsetHeight||0;
+  const top=r.offsetTop-head-4, bot=r.offsetTop+r.offsetHeight-list.clientHeight+28;
+  if(fromMap)list.scrollTo({top,behavior:smooth});
+  else if(top<list.scrollTop)list.scrollTo({top,behavior:smooth});
+  else if(bot>list.scrollTop)list.scrollTo({top:Math.min(top,bot),behavior:smooth});
+  if(!fromMap)return;
+  const lim=(parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--bar'))||52)+(mobile.matches?sheet.offsetHeight:12);
+  const lr=list.getBoundingClientRect();
+  if(lr.top>innerHeight-140||lr.bottom<lim+120)scrollBy({top:lr.top-lim-(mobile.matches?4:120),behavior:smooth});
+}
+new ResizeObserver(()=>document.documentElement.style.setProperty('--sh',sheet.offsetHeight+'px')).observe(sheet);
 function syncFilters(){document.querySelectorAll('#filters button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.f===filt))}
 $('filters').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;filt=b.dataset.f;syncFilters();render()});
 q.addEventListener('input',render);
