@@ -40,6 +40,27 @@ view.addEventListener('pointermove',ev=>{if(!drag)return;const dx=ev.clientX-dra
   ry=Math.max(-70,Math.min(70,drag.ry+dx*.35));rx=Math.max(-40,Math.min(25,drag.rx-dy*.25));turn()});
 const end=()=>{if(drag&&!drag.moved){lock='';pick('')}drag=null};
 view.addEventListener('pointerup',end);view.addEventListener('pointercancel',()=>{drag=null});
+
+/* map picker: swaps poster, relief and numbers; the rest of the frame is the same for every map */
+const DATA=document.getElementById('xv-data'), picks=[...document.querySelectorAll('.xv-pick button')];
+if(DATA&&picks.length){
+  const MAPS=Object.fromEntries(JSON.parse(DATA.textContent).map(m=>[m.slug,m]));
+  const poster=stage.querySelector('.po img'), rl=[...stage.querySelectorAll('.rl')], an=layers.relief.querySelector('.an');
+  const reliefTxt=document.querySelector('#xv-legend [data-part="relief"] span span');
+  const pre=poster.getAttribute('src').replace(/[^/]+$/,'');
+  function setMap(slug,push){const m=MAPS[slug];if(!m)return;
+    poster.src=pre+m.slug+'-poster.webp';
+    rl.forEach((im,i)=>{im.src=pre+m.slug+(i===rl.length-1?'-relief':'-thumb')+'.webp';
+      im.style.cssText=`--x:${m.x};--y:${m.y};--w:${m.w};--h:${m.h};--zz:${(m.rz*i/(rl.length-1)).toFixed(2)}`});
+    an.style.cssText=`--x:${(m.x+m.w*.5).toFixed(2)};--y:${(m.y+m.h*.04).toFixed(2)}`;
+    reliefTxt.textContent=m.txt;
+    view.setAttribute('aria-label','Exploded view of the framed '+m.name+' relief');
+    picks.forEach(b=>b.setAttribute('aria-pressed',b.dataset.map===slug));
+    if(push)history.replaceState(null,'','#'+slug);
+    document.title='What is in the frame ('+m.name+') – Mapframes';place()}
+  picks.forEach(b=>b.addEventListener('click',()=>setMap(b.dataset.map,true)));
+  const h=location.hash.slice(1);if(MAPS[h]&&h!==picks.find(b=>b.getAttribute('aria-pressed')==='true').dataset.map)setMap(h,false);
+}
 new ResizeObserver(size).observe(view);
 turn();set(0);
 /* take it apart once, the first time the frame comes into view */
