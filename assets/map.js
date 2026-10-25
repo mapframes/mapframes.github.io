@@ -103,6 +103,10 @@ function finish(){Q.done=true;clearMarks();
 $('q-again').addEventListener('click',startQuiz);
 $('q-explore').addEventListener('click',()=>setMode('explore'));
 
+/* scale bar: 10 m in the game, drawn at the size of the relief on screen */
+const bar=$('bar');
+function sizeBar(){if(bar)bar.style.width=(map.clientWidth*parseFloat(bar.dataset.mm)/parseFloat(bar.dataset.wmm)).toFixed(1)+'px'}
+sizeBar();addEventListener('resize',sizeBar);
 render();
 const h=decodeURIComponent(location.hash.slice(1));
 if(h){const i=C.findIndex(c=>slug(c.n)===h);if(i>=0)pick(i,true)}

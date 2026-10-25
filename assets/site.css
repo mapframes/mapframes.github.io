@@ -6,12 +6,12 @@
   --film:#e7ebe8; --sheet:#f3f5f3; --ink:#1e2930; --graphite:#5b676d; --rule:#c6cec9;
   --survey:#2747c9; --survey-ink:#ffffff; --survey-soft:#dfe5fb;
   --hit:#1d7a52; --miss:#b33a26;
-  --bar:52px; --wrap:1200px;
+  --bar:52px; --wrap:1200px; --grid-minor:rgba(30,41,48,.07); --grid-major:rgba(30,41,48,.16); --cast:rgba(30,41,48,.28);
   color-scheme:light;
 }
 @media (prefers-color-scheme:dark){
   :root{--film:#131b20; --sheet:#1a242a; --ink:#e4e9e6; --graphite:#97a3a8; --rule:#2c3a41;
-    --survey:#8ea2ff; --survey-ink:#0f1730; --survey-soft:#1f2b52; --hit:#5ccf98; --miss:#ff8a73; color-scheme:dark}
+    --survey:#8ea2ff; --survey-ink:#0f1730; --survey-soft:#1f2b52; --hit:#5ccf98; --miss:#ff8a73; --grid-minor:rgba(228,233,230,.06); --grid-major:rgba(228,233,230,.13); --cast:rgba(0,0,0,.55); color-scheme:dark}
 }
 *{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%}
@@ -40,9 +40,16 @@ img{max-width:100%}
 
 /* board: sheet with the relief + panel */
 .board{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:28px;align-items:start}
-.sheet{position:sticky;top:calc(var(--bar) + 12px);margin:0;background:var(--sheet);border:1px solid var(--rule);padding:18px}
+.sheet{position:sticky;top:calc(var(--bar) + 12px);margin:0;background:var(--sheet);border:1px solid var(--rule);padding:34px 18px 18px;overflow:hidden;isolation:isolate}
+/* drafting film under the relief: a 1 cm grid at the true scale of the print */
+.grid{position:absolute;z-index:-1;pointer-events:none}
+.g-minor{fill:none;stroke:var(--grid-minor);stroke-width:.12}
+.g-major{fill:none;stroke:var(--grid-major);stroke-width:.22}
+.side{position:absolute;left:0;right:0;text-align:center;font-stretch:75%;font-weight:600;font-size:13px;line-height:1;color:var(--graphite);letter-spacing:.01em}
+.side.top{top:12px}
+.side.bot{display:none}
 .map{--mh:calc(100vh - var(--bar) - 110px);position:relative;margin:0 auto;aspect-ratio:var(--ar);width:min(100%,calc(var(--mh) * var(--r)))}
-.map img{display:block;width:100%;height:100%}
+.map img{display:block;width:100%;height:100%;filter:drop-shadow(5px 7px 6px var(--cast)) drop-shadow(1px 1px 1px var(--cast))}
 .mk{position:absolute;transform:translate(-50%,-50%);width:22px;height:22px;padding:0;border-radius:50%;border:2px solid var(--sheet);background:var(--survey);color:var(--survey-ink);font:700 11px/1 "Archivo",sans-serif;font-stretch:75%;cursor:pointer;display:grid;place-items:center}
 .mk.x{width:12px;height:12px;background:var(--sheet);border:2.5px solid var(--ink)}
 .mk.dim{opacity:.2}
@@ -58,6 +65,8 @@ img{max-width:100%}
 .key i{display:inline-block;width:12px;height:12px;border-radius:50%;background:var(--survey);margin-right:7px;vertical-align:-1px}
 .key i.x{width:10px;height:10px;background:transparent;border:2px solid var(--ink)}
 .key .orient{flex-basis:100%}
+.scale{display:inline-flex;align-items:center;gap:8px}
+.scale b{display:inline-block;height:6px;border:1.5px solid var(--ink);border-top:0;min-width:8px}
 
 /* load moment: markers are placed one after another, once */
 @media (prefers-reduced-motion:no-preference){
@@ -144,9 +153,12 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:6px 24px;justify-content:space-betw
   .lead{font-size:15px}
   .board{grid-template-columns:1fr;gap:0}
   .sheet{top:var(--bar);z-index:20;margin:0 -16px;padding:8px 10px;border-left:0;border-right:0}
+  .side{display:none}
+  .map img{filter:drop-shadow(3px 4px 3px var(--cast))}
   .map{--mh:44vh}
   .key{margin-top:6px;font-size:12.5px;justify-content:center;gap:4px 14px}
   .key .orient{display:none}
+  .scale b{height:5px}
   .mk{width:18px;height:18px;font-size:9.5px;border-width:1.5px}
   .mk.x{width:10px;height:10px;border-width:2px}
   .mk.sel{width:26px;height:26px;font-size:12px}
