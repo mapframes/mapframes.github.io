@@ -268,3 +268,12 @@ footer a{color:var(--ink)}
 .intro.slim{padding-top:36px}
 .intro.slim h1{font-size:clamp(34px,5vw,60px);line-height:.95;max-width:none}
 @media (max-width:900px){.intro.slim{padding-top:24px}}
+/* game picker (home) */
+.games{display:flex;flex-wrap:wrap;gap:4px 28px;margin:28px 0 0}
+.game-btn{font:700 20px/1 "Archivo",sans-serif;font-stretch:110%;letter-spacing:.02em;padding:8px 0;text-decoration:none;color:var(--graphite);border-bottom:3px solid transparent}
+.game-btn:hover{color:var(--ink)}
+.game-btn[aria-pressed="true"]{color:var(--ink);border-bottom-color:var(--survey)}
+.game-sec+.game-sec{margin-top:56px}
+.game-h{margin:0 0 18px;font-size:15px;font-weight:600;letter-spacing:.12em;color:var(--graphite)}
+.js .game-h{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+.maplinks a.gamelink{font-weight:700;letter-spacing:.03em}
