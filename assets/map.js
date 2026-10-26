@@ -17,9 +17,53 @@ C.forEach((c,i)=>{
   b.addEventListener('click',()=>mode==='quiz'?answer(i):pick(i,true));
   map.appendChild(b);
 });
+/* overlapping markers: push them apart, short leader line + dot on the real spot */
+const NS='http://www.w3.org/2000/svg', lead=document.createElementNS(NS,'svg');
+lead.setAttribute('class','leads'); lead.setAttribute('aria-hidden','true'); map.appendChild(lead);
+function spread(){
+  const W=map.clientWidth, H=map.clientHeight; if(!W)return;
+  lead.setAttribute('viewBox',`0 0 ${W} ${H}`); lead.innerHTML='';
+  const P=C.map(c=>({x:c.x/100*W,y:c.y/100*H,r:c.dot.offsetWidth/2}));
+  const gap=Math.max(3,P[0].r*.3), L=Math.max(9,P[0].r*1.1);
+  const grp=C.map((c,i)=>i);                       /* union-find: markers that clearly cover each other */
+  const f=i=>grp[i]===i?i:(grp[i]=f(grp[i]));
+  for(let i=0;i<P.length;i++)for(let j=i+1;j<P.length;j++)
+    if(Math.hypot(P[i].x-P[j].x,P[i].y-P[j].y)<(P[i].r+P[j].r)*.8)grp[f(i)]=f(j);
+  const G={};C.forEach((c,i)=>(G[f(i)]=G[f(i)]||[]).push(i));
+  const D=P.map(q=>({x:q.x,y:q.y})), mv=new Set();
+  const clamp=i=>{D[i].x=Math.min(W-P[i].r,Math.max(P[i].r,D[i].x));D[i].y=Math.min(H-P[i].r,Math.max(P[i].r,D[i].y))};
+  Object.values(G).forEach(g=>{if(g.length<2)return;
+    const cx=g.reduce((a,i)=>a+P[i].x,0)/g.length, cy=g.reduce((a,i)=>a+P[i].y,0)/g.length;
+    g.forEach((i,k)=>{let ux=P[i].x-cx, uy=P[i].y-cy, n=Math.hypot(ux,uy);
+      if(n<.5){const a=-Math.PI*3/4+2*Math.PI*k/g.length;ux=Math.cos(a);uy=Math.sin(a);n=1}
+      ux/=n;uy/=n; const d=P[i].r+L+Math.max(0,P[i].r+gap/2-n), a0=Math.atan2(uy,ux);
+      let best=null;                                  /* try the outward direction first, then turn until it is free */
+      for(const t of [0,25,-25,50,-50,75,-75,100,-100,130,-130,160,-160]){const a=a0+t*Math.PI/180;
+        D[i].x=P[i].x+Math.cos(a)*d; D[i].y=P[i].y+Math.sin(a)*d; clamp(i);
+        let cost=Math.abs(t)/400;
+        for(let j=0;j<P.length;j++){if(j===i||g.includes(j)&&!mv.has(j))continue;
+          const q=mv.has(j)||!g.includes(j)?D[j]:P[j], o=P[i].r+P[j].r+gap-Math.hypot(D[i].x-q.x,D[i].y-q.y); if(o>0)cost+=1+o/P[i].r}
+        /* leader must not run under another marker */
+        for(let j=0;j<P.length;j++){if(j===i||g.includes(j))continue;const q=D[j],lx=D[i].x-P[i].x,ly=D[i].y-P[i].y,l2=lx*lx+ly*ly||1,
+          u=Math.max(0,Math.min(1,((q.x-P[i].x)*lx+(q.y-P[i].y)*ly)/l2)); if(Math.hypot(P[i].x+u*lx-q.x,P[i].y+u*ly-q.y)<P[j].r)cost+=.8}
+        if(!best||cost<best.c)best={c:cost,x:D[i].x,y:D[i].y}; if(cost<.01)break}
+      D[i].x=best.x; D[i].y=best.y; mv.add(i)})});
+  for(let it=0;it<40&&mv.size;it++){let hit=false;   /* moved markers must not land on others */
+    mv.forEach(i=>{for(let j=0;j<P.length;j++){if(j===i)continue;
+      let vx=D[i].x-D[j].x, vy=D[i].y-D[j].y, n=Math.hypot(vx,vy), need=P[i].r+P[j].r+gap;
+      if(n>=need)continue; hit=true; if(n<.01){vx=1;vy=0;n=1}
+      const push=(need-n)*(mv.has(j)?.5:1); D[i].x+=vx/n*push; D[i].y+=vy/n*push; clamp(i)}});
+    if(!hit)break}
+  C.forEach((c,i)=>{c.dx=D[i].x/W*100;c.dy=D[i].y/H*100;c.ld=null;if(!mv.has(i))return;
+    const e=document.createElementNS(NS,'g'); e.setAttribute('class','ld'+(c.dot.classList.contains('dim')?' dim':''));
+    e.innerHTML=`<line x1="${P[i].x.toFixed(1)}" y1="${P[i].y.toFixed(1)}" x2="${D[i].x.toFixed(1)}" y2="${D[i].y.toFixed(1)}"/><circle cx="${P[i].x.toFixed(1)}" cy="${P[i].y.toFixed(1)}" r="${Math.max(2.2,P[i].r*.22).toFixed(1)}"/>`;
+    lead.appendChild(e); c.ld=e});
+  C.forEach(c=>{c.dot.style.left=c.dx+'%';c.dot.style.top=c.dy+'%'});
+}
+spread(); addEventListener('resize',spread); if(document.fonts)document.fonts.ready.then(spread);
 function labelDot(i){const c=C[i];c.dot.setAttribute('aria-label',mode==='quiz'?('Marker '+(i+1)):((c.p?c.p+': ':'')+c.n))}
 if(!matchMedia('(prefers-reduced-motion: reduce)').matches){map.classList.add('placing');setTimeout(()=>map.classList.remove('placing'),C.length*18+600)}
-function showTip(i){const c=C[i];tip.textContent=c.n+(c.a?' ('+c.a+')':'');tip.style.left=c.x+'%';tip.style.top=c.y+'%';tip.style.display='block'}
+function showTip(i){const c=C[i];tip.textContent=c.n+(c.a?' ('+c.a+')':'');tip.style.left=c.dx+'%';tip.style.top=c.dy+'%';tip.style.display='block'}
 
 /* explore */
 function match(c){const s=q.value.trim().toLowerCase();
@@ -28,7 +72,7 @@ function match(c){const s=q.value.trim().toLowerCase();
 const ORDER=Object.keys(GN);const SEQ=C.map((c,i)=>i).sort((a,b)=>(ORDER.indexOf(C[a].g)-ORDER.indexOf(C[b].g))||a-b);
 function render(){
   list.innerHTML='';let g='',n=0;
-  SEQ.forEach(i=>{const c=C[i];const ok=match(c);c.dot.classList.toggle('dim',!ok);if(!ok)return;n++;
+  SEQ.forEach(i=>{const c=C[i];const ok=match(c);c.dot.classList.toggle('dim',!ok);if(c.ld)c.ld.classList.toggle('dim',!ok);if(!ok)return;n++;
     if(c.g!==g){g=c.g;const h=document.createElement('h3');h.className='grp';h.textContent=GN[g]||g;list.appendChild(h)}
     const r=document.createElement('div');r.className='row'+(i===sel?' sel':'');r.id='c-'+slug(c.n);r.tabIndex=0;r.setAttribute('role','button');r.setAttribute('aria-expanded',i===sel);
     r.innerHTML=`<span class="num${c.p?'':' x'}" aria-hidden="true">${c.p||''}</span><div><p class="nm">${esc(c.n)}${c.a?`<span class="al">${esc(c.a)}</span>`:''}</p><p class="ds">${esc(c.d)}</p>${c.o?'':'<p class="who">Player name, not shown in the game</p>'}${c.note?`<p class="nt">${esc(c.note)}</p>`:''}</div>`;
@@ -125,4 +169,10 @@ sizeBar();addEventListener('resize',sizeBar);
 render();
 const h=decodeURIComponent(location.hash.slice(1));
 if(h){const i=C.findIndex(c=>slug(c.n)===h);if(i>=0)pick(i,true)}
+
+/* top bar: scroll the current map into view (narrow screens) */
+(function(){const nav=document.querySelector('.maplinks'),cur=nav&&nav.querySelector('a[aria-current]');
+  if(!nav||!cur||nav.scrollWidth<=nav.clientWidth)return;
+  nav.scrollLeft=Math.max(0,cur.offsetLeft-nav.offsetLeft-(nav.clientWidth-cur.offsetWidth)/2);
+  const f=()=>nav.classList.toggle('sl',nav.scrollLeft>2); f(); nav.addEventListener('scroll',f,{passive:true});})();
 })();
